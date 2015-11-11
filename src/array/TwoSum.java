@@ -11,7 +11,7 @@ public class TwoSum {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		int[] num=new int[]{0,1,2,2,2,3,4,5,6,7,7,7,7,7,8,8,10,12};
-		for(List<Integer> sub:sumwithoutdup(num,14)){
+		for(List<Integer> sub:sumwithoutdup(num,13)){
 			for(int i: sub){
 				System.out.print(i+" ");
 			}
@@ -40,20 +40,44 @@ public class TwoSum {
 		if(numbers == null || numbers.length == 0){
 			return result;
 		}
+		Set<Integer> set=new HashSet<Integer>();
 		Map<Integer,Integer> map=new HashMap<Integer,Integer>();
 		for(int i=0;i<numbers.length;++i){
-			if(map.containsKey(numbers[i]) && 2*numbers[i] != target) continue;
 			int left=target-numbers[i];
-			if(map.containsKey(left)){
-				if(numbers[i] == left && i != map.get(left)+1) continue;
-					List<Integer> sub=new ArrayList<Integer>();
-					sub.add(left);
-					sub.add(numbers[i]);
-					result.add(sub);
+			if(set.contains(left)){
+				if(!map.containsKey(left) && !map.containsKey(numbers[i])){
+					map.put(left, numbers[i]);
+				}
+			}//else{
+				set.add(numbers[i]);
+			//}
+		}
+		for(int i:map.keySet()){
+			List<Integer> sub=new ArrayList<Integer>();
+			sub.add(i);
+			sub.add(map.get(i));
+			result.add(sub);
+		}
+		return result;
+	}
+	//Input array already sorted
+	public int[] SumSorted(int[] num,int target){
+		int[] result=new int[2];
+		if(num == null || num.length == 0){
+			return result;
+		}
+		int i=0,j=num.length-1;
+		while(i<j){
+			long sum=num[i]+num[j];
+			if( sum  == target){
+				result[0]=i+1;
+				result[2]=j+1;
+				return result;
+			}else if(sum<target){
+				i++;
+			}else{
+				j--;
 			}
-			if(!map.containsKey(numbers[i]))
-				map.put(numbers[i], i);
-			
 		}
 		return result;
 	}

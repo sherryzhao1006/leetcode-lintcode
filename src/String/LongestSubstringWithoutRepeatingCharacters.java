@@ -37,8 +37,8 @@ System.out.println(lengthOfLongestSubstring("hnwnkuewhsqmgbbuqcljjivswmdkqtbxixm
 			}
 			else{
 				set.add(s.charAt(i));
-				max=Math.max(max, i-left+1);
 			}
+			max=Math.max(max, i-left+1);
 		}
 		return max;
 	}

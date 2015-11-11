@@ -57,51 +57,35 @@ public class ZigZagConversion {
 		return br.toString();
 	}
 	public static String convert1(String s, int numRows) {
-	    StringBuilder[] list = new StringBuilder[numRows];
-	    for(int i=0; i < list.length; i++) {
-	        list[i] = new StringBuilder();
-	    }
-	    boolean down = true;
-	    int cnt = 0;
-//	    for(int i=0; i < s.length(); i++) {
-//	    	System.out.println(i+" "+cnt);
-//	    	list[cnt].append(s.charAt(i));
-//	    	if(down){
-//	    		cnt++;
-//	    	}else{
-//	    		cnt--;
-//	    	}
-//	    	if(cnt == numRows){
-//	    		cnt-=2;
-//	    		down=!down;
-//	    	}
-//	    	else if(cnt == -1){
-//	    		cnt+=2;
-//	    		down=!down;
-//	    	}
-//	    }
-	    for(int i=0; i < s.length(); i++) {
-	    	System.out.println(i+" "+cnt+" "+down);
-            if(cnt ==0) {
-                down = true;
-            } else if(cnt == numRows) {
-                down = false;
-                cnt = numRows-2;
+        if(s == null || s.length() == 0 || numRows == 1){
+            return s;
+        }
+        StringBuffer[] br=new StringBuffer[numRows];
+        for(int i=0;i<numRows;++i){
+            br[i]=new StringBuffer();
+        }
+        int layer=0;
+        boolean down=true;
+        for(int i=0;i<s.length();++i){
+            br[layer].append(s.charAt(i));
+            if(down){
+                layer++;
+            }else{
+                layer--;
             }
-    
-            list[cnt].append(s.charAt(i));
-    
-    
-            if(down == true) {
-                cnt++;
-            } else {
-                cnt--;
+            if(layer == numRows){
+                layer-=2;
+                down=!down;
             }
-        }  
-	    StringBuffer br=new StringBuffer();
-	    for(StringBuilder bd:list){
-	    	br.append(bd.toString());
-	    }
-	    return br.toString();
-	}
+            else if(layer == -1){
+                layer+=2;
+                down=!down;
+            }
+        }
+        StringBuffer result=new StringBuffer();
+        for(int i=0;i<br.length;++i){
+            result.append(br[i].toString());
+        }
+        return result.toString();
+    }
 }

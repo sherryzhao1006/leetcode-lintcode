@@ -1,5 +1,8 @@
 package array;
 import java.util.*;
+//Missing Ranges
+//Given a sorted integer array where the range of elements are [lower, upper] inclusive, return its missing ranges.
+//For example, given [0, 1, 3, 50, 75], lower = 0 and upper = 99, return ["2", "4->49", "51->74", "76->99"].
 public class MissingRanges {
 
 	public static void main(String[] args) {
@@ -7,26 +10,36 @@ public class MissingRanges {
 
 	}
 	public List<String> findMissingRanges(int[] nums, int lower, int upper) {
-        List<String> result=new ArrayList<String>();
+		List<String> result=new ArrayList<String>();
         if(nums == null || nums.length == 0){
+            if(lower == upper) {
+                result.add(lower+"");
+            } else {
+                result.add(lower + "->" + upper);
+            }
             return result;
         }
-        int start=lower;
-        for(int i=0;i<nums.length;++i){
-        	if(nums[i])
-        }
-        int prev = 0;
-        int curr = 1;
+        
+        int prev = lower;
+                
+        int curr = 0;
+        
         while(curr < nums.length) {
-            if(nums[curr] - nums[curr-1] != 1) {
-                if(nums[prev]+2 == nums[curr]) {
-                    result.add(nums[prev]+1 + "");
-                } else {
-                    result.add(nums[prev]+1 + "->" + nums[curr]-1);
-                }
+            if(nums[curr] - prev == 1) {
+                result.add(prev+"");
+            } else if (nums[curr] - prev >1) {
+                result.add(prev+"->"+(nums[curr]-1));    
             }
-            prev = curr;
+            prev = nums[curr]+1;
+            curr++;
         }
+        if(nums[nums.length-1] != upper) {
+            if(nums[nums.length-1]+1 == upper) {
+                result.add(upper+"");
+            } else if( nums[nums.length-1]+1 < upper) {
+                result.add((nums[nums.length-1]+1) + "->" + upper);
+            }
+        }        
         return result;
     }
 }

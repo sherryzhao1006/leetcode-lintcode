@@ -51,6 +51,7 @@ public class PalindromePermutationII {
 			br.deleteCharAt(0);
 			br.deleteCharAt(br.length() -1);
 		    }
+		}
 	}
 
 }
