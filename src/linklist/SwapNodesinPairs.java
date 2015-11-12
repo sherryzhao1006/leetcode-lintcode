@@ -24,21 +24,21 @@ public class SwapNodesinPairs {
 		}
 	}
     public static ListNode swapPairs(ListNode head) {
-    	if(head == null || head.next== null){
-    		return head;
-    	}
-    	ListNode dummy=new ListNode(0);
-    	dummy.next=head;
-    	ListNode run=dummy;
-    	while(run.next != null && run.next.next != null){
-    		ListNode next=run.next.next.next;
-    		ListNode start=run.next;
-    		run.next=start.next;
-    		run.next.next=start;
-    		start.next=next;
-    		run=run.next.next;
-    	}
-    	return dummy.next;
+    	if(head == null || head.next == null){
+            return head;
+        }
+        ListNode dummy=new ListNode(0);
+        ListNode run=dummy;
+        dummy.next=head;
+        while(run.next != null && run.next.next != null){
+            ListNode first=run.next;
+            ListNode second=run.next.next;
+            run.next=second;
+            first.next=second.next;
+            second.next=first;
+            run=first;
+        }
+        return dummy.next;
     }
 
 }
