@@ -1,0 +1,24 @@
+package HashTable;
+
+public class BullsAndCows {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.println(getHint("1807","7810"));
+	}
+	public static String getHint(String secret, String guess) {
+        int[] m=new int[256];
+        int bulls = 0, cows = 0;
+        for (int i = 0; i < secret.length(); ++i) {
+            if (secret.charAt(i) == guess.charAt(i)) ++bulls;
+            else {
+                System.out.println(m[secret.charAt(i)]+" "+m[guess.charAt(i)]);
+                if (m[secret.charAt(i)]++ < 0) ++cows;
+                if (m[guess.charAt(i)]-- > 0) ++ cows;
+                System.out.println(m[secret.charAt(i)]+" "+m[guess.charAt(i)]);
+            }
+        }
+        return bulls+ "A" + cows + "B";
+    }
+
+}
