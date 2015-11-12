@@ -35,7 +35,7 @@ class Solution extends Reader4 {
             if(now < 4){
                 EOF=true;
             }
-            int length=Math.min(now,n-read);
+            int length=Math.min(now,n-read);//判断是读到的少还是剩下来少
             for(int i=0;i<length;++i){
                 buf[read+i]=buffer[i];
             }
