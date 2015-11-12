@@ -1,3 +1,4 @@
+package String;
 public class ReadNCharactersGivenRead4 {
 /*
  * The API: int read4(char *buf) reads 4 characters at a time from a file.
@@ -15,38 +16,31 @@ The read function will only be called once for each test case.
  */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		so s=new so();
-		char[] buf=new char[10];
-		System.out.println(s.read(buf, 10));
+
 	}
 
 }
-class Reader4{
-	public int read4(char[] buf){
-		return 4;
-	}
-}
-class so extends Reader4 {
+class Solution extends Reader4 {
     /**
      * @param buf Destination buffer
      * @param n   Maximum number of characters to read
      * @return    The number of characters read
      */
-    public int read(char[] buf, int n) {
-    	char[] buffer=new char[4];//input of read4
-    	boolean eof=false;//end of file
-    	int read=0;//bytes already read;
-    	while(!eof && read<n){
-    		int curr=read4(buffer);
-    		if(curr != 4){
-    			eof=false;
-    		}
-    		int length=Math.min(curr, n-read);
-    		for(int i=0;i<length;++i){
-    			buf[read+i]=buffer[i];
-    		}
-    		read+=length;
-    	}
-    	return read;
+	public int read(char[] buf, int n) {
+        char[] buffer=new char[4];
+        boolean EOF=false;
+        int read=0;
+        while(!EOF && read<n){
+            int now=read4(buffer);
+            if(now < 4){
+                EOF=true;
+            }
+            int length=Math.min(now,n-read);
+            for(int i=0;i<length;++i){
+                buf[read+i]=buffer[i];
+            }
+            read+=length;
+        }
+        return read;
     }
 }
