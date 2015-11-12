@@ -2,6 +2,8 @@
 
 Note: You may not slant the container.
 http://blog.csdn.net/wzy_1988/article/details/17248209
+这道题与trapping rain water的不同是，这道题底下没有障碍物，即不用考虑减去底下突起的地方，而是直接加就好。但是trapping rain water
+底下是有障碍物的，所以数值不能直接相加，而是要去加绝对高度
 */
 public class Solution {
     public int maxArea(int[] height) {
