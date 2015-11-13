@@ -36,17 +36,23 @@ public class Graycode {
      * generate 0, 1 then add 10 from back to get 11, 10
      * same goes for 00, 01, 11, 10, add 100 to get 110, 111, 101, 100
      */
-    public static List<Integer> grayCode(int n) {
-        List<Integer> results = new ArrayList<Integer>();
-        results.add(0); // starts from 0
-        for (int i = 0; i < n; i++) {
-            int inc = 1 << i; // move 1 i times
-            for (int j = results.size() - 1; j >= 0; j--) { // backtracking
-                results.add(results.get(j) + inc);
-                System.out.println(results);
-            }
+    public List<Integer> grayCode(int n) {
+        List<Integer> result=new ArrayList<Integer>();
+        if(n == 0){
+            result.add(0);
+            return result;
         }
-        return results;
+        result.add(0);
+        result.add(1);
+        int i=1;
+        while(i<n){
+            int size=result.size();
+            for(int j=size-1;j>=0;--j){
+                result.add(result.get(j)+(1<<i));
+            }
+            i++;
+        }
+        return result;
     }
 
 }
