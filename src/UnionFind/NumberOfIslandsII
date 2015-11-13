@@ -1,0 +1,87 @@
+/*A 2d grid map of m rows and n columns is initially filled with water. We may perform an addLand operation which turns the water at position (row, col) into a land. Given a list of positions to operate, count the number of islands after each addLand operation. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+
+Example:
+
+Given m = 3, n = 3, positions = [[0,0], [0,1], [1,2], [2,1]].
+Initially, the 2d grid grid is filled with water. (Assume 0 represents water and 1 represents land).
+
+0 0 0
+0 0 0
+0 0 0
+Operation #1: addLand(0, 0) turns the water at grid[0][0] into a land.
+
+1 0 0
+0 0 0   Number of islands = 1
+0 0 0
+Operation #2: addLand(0, 1) turns the water at grid[0][1] into a land.
+
+1 1 0
+0 0 0   Number of islands = 1
+0 0 0
+Operation #3: addLand(1, 2) turns the water at grid[1][2] into a land.
+
+1 1 0
+0 0 1   Number of islands = 2
+0 0 0
+Operation #4: addLand(2, 1) turns the water at grid[2][1] into a land.
+
+1 1 0
+0 0 1   Number of islands = 3
+0 1 0
+We return the result as an array: [1, 1, 2, 3]
+
+Update: (2015/11/13)
+If you are using Java, the parameter List<int[]> positions had been changed to int[][] positions. Please click on the reload button above the code editor  to reset the code definition.
+*/
+public class Solution {
+    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+        List<Integer> result=new ArrayList<Integer>();
+        if(positions == null || positions.length == 0){
+            return result;
+        }
+        Set<Integer> set=new HashSet<Integer>();//record the position has visited
+        Map<Integer,Integer> map=new HashMap<Integer,Integer>();//store id and its father id
+        //set father
+        for(int i=0;i<m;++i){
+            for(int j=0;j<n;++j){
+                int id=i*n+j;
+                map.put(id,id);
+            }
+        }
+        int[] dx={-1,1,0,0};
+        int[] dy={0,0,-1,1};
+        int count=0;
+        for(int i=0;i<positions.length;++i){
+            count++;
+            int x=positions[i][0];
+            int y=positions[i][1];
+            int id=x*n+y;
+            set.add(id);
+            for(int j=0;j<4;++j){
+                int nx=x+dx[j];
+                int ny=y+dy[j];
+                int nid=nx*n+ny;
+                if(nx<0 || nx>=m || ny<0 || ny>=n || !set.contains(nid)) continue;
+                int fa=findFather(map,id);
+                int chi=findFather(map,nid);
+                if(fa != chi){
+                    count--;
+                    union(map,fa,chi);
+                }
+            }
+            result.add(count);
+        }
+        return result;
+    }
+    public int findFather(Map<Integer,Integer> map,int id){
+        while(id != map.get(id)){
+            id=map.get(id);
+        }
+        return id;
+    }
+    public void union(Map<Integer,Integer> map,int id,int nid){
+        map.put(id,nid);
+    }
+}
+
+
