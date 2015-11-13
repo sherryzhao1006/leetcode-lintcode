@@ -46,42 +46,4 @@ public class ReverseWordsinaString {
 		}
 		return br.toString().trim();
 	}
-	//reverse words in a string II
-	/*
-	 * For example,
-Given s = "the sky is blue",
-return "blue is sky the".
-	 */
-	public static void reverseWords1(char[] s){
-		if(s == null || s.length == 0){
-			return;
-		}
-		reverse(s,0,s.length-1);
-		for(char c:s){
-			System.out.print(c+" ");
-		}
-		System.out.println();
-		int start=0,end=0;
-		while(end < s.length) {
-            while(end < s.length && s[end] != ' ') {
-                    end++;
-            }
-            reverse(s,start,end-1);
-            end++;
-            start = end;
-        }
-		for(char c:s){
-			System.out.print(c+" ");
-		}
-	}
-	public static void reverse(char[] s,int start,int end){
-		while(start<=end){
-			char tmp=s[start];
-			s[start]=s[end];
-			s[end]=tmp;
-			start++;
-			end--;
-		}
-	}
-
 }
