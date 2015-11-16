@@ -1,0 +1,41 @@
+/*Given a binary search tree and a node in it, find the in-order successor of that node in the BST.
+
+Note: If the given node has no in-order successor in the tree, return null.
+*/
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        if(root == null || p == null){
+            return null;
+        }
+        if(p.right != null){
+            return findMin(p.right);
+        }
+        //else p.right != null, find the smallest node which greater than p
+        TreeNode pre=null;
+        TreeNode q=root;
+        while(q.val != p.val){
+            if(q.val>p.val){
+                pre=q;
+                q=q.left;
+            }else{
+                q=q.right;
+            }
+        }
+        return pre;
+    }
+    public TreeNode findMin(TreeNode root){
+        while(root.left != null){
+            root=root.left;
+        }
+        return root;
+    }
+}
