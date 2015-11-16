@@ -9,6 +9,8 @@ Some examples:
 " 2-1 + 2 " = 3
 "(1+(4+5+2)-3)+(6+8)" = 23
 */
+/* stack:number,sign,number,sign......
+*/
 public class Solution {
     public int calculate(String s) {
         if(s == null || s.length() == 0){
