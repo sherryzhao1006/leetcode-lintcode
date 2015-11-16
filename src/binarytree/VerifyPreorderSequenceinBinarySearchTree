@@ -1,0 +1,38 @@
+/*Given an array of numbers, verify whether it is the correct preorder traversal sequence of a binary search tree.
+
+You may assume each number in the sequence is unique.
+
+Follow up:
+Could you do it using only constant space complexity?
+*/
+public class Solution {
+    public boolean verifyPreorder(int[] preorder) {
+        if(preorder == null || preorder.length == 0){
+            return true;
+        }
+        return helper(preorder,0,preorder.length-1);
+    }
+    /* recursive
+    find the first number that larger than root, left part should be left children  right part should be the right children
+    if right part children larger than root, mistake!
+    */
+    public boolean helper(int[] nums,int start,int end){
+        if(start >= end) return true;
+        int pivot=nums[start];
+        int record=end+1;
+        for(int i=start+1;i<=end;++i){
+            if(nums[i]>pivot){
+                record=i;
+                break;
+            }
+        }
+        int i=record;
+        while(i<=end){
+            if(nums[i]<pivot){
+                return false;
+            }
+            i++;
+        }
+        return helper(nums,start+1,record-1) && helper(nums,record,end);
+    }
+}
