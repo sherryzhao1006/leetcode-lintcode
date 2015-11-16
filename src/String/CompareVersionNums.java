@@ -24,19 +24,36 @@ public class CompareVersionNums {
         String v2 = "1.3.3.7";
         System.out.println(compareVersion(v1, v2));
     }
-	public static int compareVersion(String version1, String version2){
-		String[] level1=version1.split("\\.");
-		String[] level2=version2.split("\\.");
-		int length=Math.max(level1.length, level2.length);
-		int i;
-		for(i=0;i<length;++i){
-			Integer a=i<level1.length?Integer.parseInt(level1[i]):0;
-			Integer b= i<level2.length? Integer.parseInt(level2[i]):0;
-			if(a!=b){
-				return a>b?1:-1;
-			}
-		}
-		return 0;
-	}
+	public int compareVersion(String version1, String version2) {
+        if(version1.length() == 0) return -1;
+        if(version2.length() == 0) return 1;
+        String[] sp1=version1.split("\\.");
+        String[] sp2=version2.split("\\.");
+        int index1=0,index2=0;
+        
+        while(index1<sp1.length && index2<sp2.length){
+            int val1=Integer.parseInt(sp1[index1]);
+            int val2=Integer.parseInt(sp2[index2]);
+            if(val1 > val2){
+                return 1;
+            }else if(val1 <val2){
+                return -1;
+            }else{
+                index1++;
+                index2++;
+            }
+        }
+        while(index1<sp1.length){
+            if(Integer.parseInt(sp1[index1]) !=0)
+                return 1;
+            index1++;
+        }
+        while(index2<sp2.length){
+            if(Integer.parseInt(sp2[index2]) !=0)
+                return -1;
+            index2++;
+        }
+        return 0; 
+    }
 
 }
