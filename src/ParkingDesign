@@ -1,0 +1,54 @@
+/*http://www.careercup.com/question?id=5750856565653504
+*/
+public enum SIZE { Small, Medium, Big }
+
+SIZE size = size.Small;
+
+class Car{
+    public String plate;
+    public SIZE size;
+}
+class Ticket{
+    public int id;
+    public Car car;
+}
+class ParkingLot{
+    Ticket park(Car car);
+    Map<Ticket,ParkingSpace> map;
+    Stack<ParkingSpace> small;
+    Stack<ParkingSpace> medium; 
+    Stack<ParkingSpace> large; 
+    ParkingSpace remove(Ticket ticket);
+
+
+    Ticket park(Car car) {
+    if(car.size == SIZE.Small) {
+        if(!small.isEmpty()) {
+            ParkingSpace curr = small.pop();
+            curr.carParkhere = car;
+            Ticket t = new Ticket(Math.random(),car);
+            map.put(t,curr);            
+            return t;
+        }
+    }
+    }
+    ParkingSpace remove(Ticket ticket) {
+    
+        ParkingSpace ps = map.get(ticket);
+        ps.carParkhere=null;
+        if(ps.size == SIZE.Small) {
+            small.push(ps);
+        }
+        map.remove(ticket);
+        return ps;
+    }
+
+
+}
+
+class ParkingSpace{
+    public SIZE size;
+    public int spaceNum;
+    public Car carParkhere;
+}
+}
