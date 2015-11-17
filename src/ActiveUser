@@ -1,0 +1,100 @@
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+
+class Interval {
+      int start;
+      int end;
+      Interval() { start = 0; end = 0; }
+      Interval(int s, int e) { start = s; end = e; }
+  }
+class Pair {
+  int time;
+  int cnt;
+  public Pair(int time, int count) {
+    this.time = time;
+    this.cnt = count;
+  }
+}
+
+class Solution {
+  public static void main(String[] args) {
+    //Interval[] intervals={new Interval(0,30),new Interval(30,40),new Interval(15,20)};
+    Interval[] intervals = {new Interval(20,30), new Interval(20,30)};
+    minMeetingRooms(intervals);//map:key min value
+
+
+  }
+  public static void minMeetingRooms(Interval[] intervals) {
+        if(intervals == null || intervals.length == 0) {
+            return;
+        }
+        int n = intervals.length;
+        int[] start = new int[n];
+        int[] end = new int[n];
+        for(int i=0; i < intervals.length; i++) {
+            start[i] = intervals[i].start;
+            end[i] = intervals[i].end;
+        }
+        Arrays.sort(start);
+        Arrays.sort(end);
+        int i=0,j=0;
+        int cnt = 0;
+        Map<Integer,Integer> map = new TreeMap<Integer,Integer>();
+        List<Pair> res = new ArrayList<Pair>();
+        while(i < n && j < n) {
+            if(start[i] < end[j]) {
+              
+                cnt++;
+                //
+                if(!res.isEmpty() && res.get(res.size()-1).time == start[i]) {
+                  res.get(res.size()-1).cnt = cnt;
+                } else {
+                  res.add(new Pair(start[i],cnt));
+                }
+                //System.out.println("Active Meeting at Time " + start[i]+ ": " + cnt);              
+                i++;
+            } else if(end[j] <= start[i]) {
+                cnt--;
+                if(!res.isEmpty() && res.get(res.size()-1).time == end[j]) {
+                  res.get(res.size()-1).cnt = cnt;  
+                } else {
+                  res.add(new Pair(end[j],cnt));
+                }
+                //System.out.println("Active Meeting at Time " + end[j]+ ": " + cnt);              
+                j++;
+            }
+        }
+        while(j < n) {
+          cnt--;
+          if(!res.isEmpty() && res.get(res.size()-1).time == end[j]) {
+            res.get(res.size()-1).cnt = cnt;  
+          } else {
+            res.add(new Pair(end[j],cnt));
+          }
+          //System.out.println("Active Meeting at Time " + end[j]+ ": " + cnt);  
+          j++;
+        }
+        for(Pair p:res){
+          System.out.println(p.time+": "+p.cnt);
+        }
+        //List<Pair> finalRes = new ArrayList<Pair>();
+        //1,1,2,3,3
+    //      
+        /*
+        int length=0;
+        for(int i=1;i<res.size();++i){
+          if(res.get(i).time != res.get(i-1).time){
+            finalRes.add(res.get(i-1));
+          }
+        }
+        */
+    
+    }
+}
