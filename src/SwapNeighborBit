@@ -1,0 +1,18 @@
+//http://flockdraw.com/gallery/view/2101051
+hex => 0101 => 0101 0101 0101 0101 = rightMask = 0x5555
+            1010
+
+
+//http://flockdraw.com/gallery/view/2101055
+public int swapBit(int num){
+    if(num ==0){
+        return 0;
+    }
+    //往右移动是把偶数变成基数(因为mask是基数是1),取出移动后奇数位的值
+    int rightMask = 0x5555;
+    int odd=num>>1 & rightMask;
+    //相反，往左移动就是把奇数位变成偶数位，取出移动后偶数位的值
+    int leftMask=0xaaaa;
+    int even=num<<1 &leftMask;
+    return odd+even;  
+}
