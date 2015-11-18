@@ -1,0 +1,42 @@
+//sort stack only use stack and int
+public class Solution {
+    public static void main(String[] args) {
+      Stack<Integer> stack=new Stack<Integer>();
+      stack.push(3);
+      stack.push(1);
+      stack.push(4);
+      stack.push(2);
+      stack.push(5);
+      stack.push(6);
+      stack.push(7);
+      stack.push(0);
+      sortStack(stack);
+      while(!stack.isEmpty()){
+        System.out.println(stack.pop());
+      }
+
+    }
+  public static void sortStack(Stack<Integer> stack){
+    if(stack == null){
+      return;
+    }
+    Stack<Integer> stacknew=new Stack<Integer>();
+    int cur=stack.pop();
+    while(!stack.isEmpty()){
+      if(!stack.isEmpty() && cur>=stack.peek()){
+        stacknew.push(cur);
+        cur=stack.pop();
+      }else{
+        int val=cur;
+        cur=stack.pop();
+        stack.push(val);
+        while(!stacknew.isEmpty() && stacknew.peek()<cur){
+          stack.push(stacknew.pop());
+        }
+      }
+    }
+    stack.push(cur);
+    while(!stacknew.isEmpty()){
+      stack.push(stacknew.pop());
+    }
+  }
