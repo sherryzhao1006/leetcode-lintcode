@@ -1,0 +1,39 @@
+/*DaoDao组电面。题目是给一个元素为1或0的数组arr，对index i和j，数组arr1为arr把i到j之间(inclusive)的1变为0，0变为1，求对所有可能的i和j，arr1中1的数目的最大值。
+*/
+public class Solution {
+    public static void main(String[] args) {
+    System.out.println(swap(new int[]{1,0,1,1,1,0,0,0,0}));
+    }
+  //[1,0,1,1,1,0,0,0,0]-->[1,0,1,1,1,1,1,1,1]
+    public static int swap(int[] arr){
+      if(arr == null || arr.length == 0){
+        return 0;
+      }
+      int sum=0;//找原始有几个1
+      for(int i:arr){
+        sum+=i;
+      }
+      int n=arr.length;
+      int[][] dp=new int[n][n];//i->j 有几个0 转换后有几个1 包括i和j
+      dp[0][0]=arr[0]==1?0:1;
+      for(int i=1;i<n;++i){
+        if(arr[i] == 0){
+          dp[0][i]=dp[0][i-1]+1;
+          dp[i][i]=1;
+        }else{
+          dp[0][i]=dp[0][i-1];
+        }
+      }
+      int max=Integer.MIN_VALUE;
+      for(int i=0;i<n;++i){
+        for(int j=i-1;j>=0;--j){
+            if(arr[j] == 0){
+              dp[j][i]=dp[j+1][i]+1;
+            }else dp[j][i]=dp[j+1][i];
+          //有几个0  dp[j][i] 有几个1：sum-((i-j+1)-dp[j][i])+dp[j][i]
+          max=Math.max(max,sum-(i-j+1)+2*dp[j][i]);
+        }
+      }
+      return max;
+    }  
+}
