@@ -1,0 +1,59 @@
+/*给一个 linkedlist，delete 第斐波那契数个的元素
+fib数： 1，2，3，5，8，13 .……
+解法：线性纪录count 如果count ＝＝fib ，删除这个node
+*/
+public class Solution {
+    public static void main(String[] args) {
+      TreeNode head=new TreeNode(1);
+      TreeNode run=head;
+      for(int i=2;i<40;++i){
+        run.next=new TreeNode(i);
+        run=run.next;
+      }
+      int[] fi=new int[41];
+      fi[1]=1;
+      fi[2]=1;
+      for(int i=3;i<41;++i){
+        fi[i]=fi[i-1]+fi[i-2];
+        System.out.print(fi[i]+" ");
+      }
+      System.out.println();
+      TreeNode root=delete(head);
+      while(root != null){
+        System.out.println(root.val);
+        root=root.next;
+      }
+
+    }
+  //1->2->3->4->5->6->7
+    public static TreeNode delete(TreeNode head){
+      if(head == null || head.next == null){
+        return null;
+      }
+      int cur=1;
+      int result=1;
+      TreeNode dummy=new TreeNode(0);
+      TreeNode run=dummy;
+      dummy.next=head;
+      int count=1;
+      while(run != null && run.next != null){
+        while(count == result){
+          run.next=run.next.next;
+          int tmp=result;
+          result=cur+result;
+          cur=tmp;
+          count++;
+        }
+        run=run.next;
+        count++;
+      }
+      return dummy.next;
+    }
+}
+class TreeNode{
+  TreeNode next;
+  int val;
+  public TreeNode(int val){
+    this.val=val;
+  }
+}
