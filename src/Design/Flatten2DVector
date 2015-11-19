@@ -50,7 +50,30 @@ public class Vector2D {
         return end !=true && cur<result.size();
     }
 }
+//method 2
+public class Vector2D {
+    Iterator<List<Integer>> outer;
+    Iterator<Integer> inner;
+    public Vector2D(List<List<Integer>> vec2d) {
+        outer = vec2d.iterator();
+        inner = null;
+    }
 
+    public int next() {
+        return inner.next();                
+    }
+
+    public boolean hasNext() {
+        //while loop not if
+        while((inner == null || !inner.hasNext()) && outer.hasNext()) {
+            inner = outer.next().iterator();
+        }
+        if(inner == null) {
+            return false;
+        }
+        return inner.hasNext();//if outer.hasNext == false, inner point to the last list which is not null.      
+    }
+}
 /**
  * Your Vector2D object will be instantiated and called as such:
  * Vector2D i = new Vector2D(vec2d);
