@@ -1,0 +1,58 @@
+public class isSumstring {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.println(isSubstring("ri*","TripAdvisor"));
+	}
+	/*
+	 * 举个例子，target = "TripAdvisor", pattern = "ri*vi", return true; 如果pattern = "ri*vo", return false; 
+	 */
+	public static boolean isSubstring(String pattern,String target){
+		if(target == null || target.length() == 0){
+			return pattern == null || pattern.length() == 0;
+		}
+		if(pattern == null || pattern.length() == 0){
+			return true;
+		}
+		int ppos=0;
+		int tpos=0;
+		int pmatch=-1;
+		int tmatch=-1;
+		while(tpos<target.length()){
+			char a=pattern.charAt(0);
+			char b=target.charAt(tpos);
+			if(a!= b){
+				tpos++;
+			}else{
+				break;
+			}
+		}
+		if(tpos == pattern.length()) return false;
+		System.out.println(tpos+" "+ppos);
+		while(ppos<pattern.length() && tpos<target.length()){
+			char a=pattern.charAt(ppos);
+			char b=target.charAt(tpos);
+			if(a == b){
+				ppos++;
+				tpos++;
+				if(pmatch != -1){
+					pmatch=-1;
+					tmatch=-1;
+				}
+			}else if(a == '*'){
+				pmatch=ppos;
+				tmatch=tpos;
+				ppos++;
+				tpos++;
+			}else if(a != b){
+				if(pmatch == -1){
+					return false;
+				}else{
+					tpos++;
+				}
+			}else return false;
+		}
+		return ppos == pattern.length();
+	}
+
+}
