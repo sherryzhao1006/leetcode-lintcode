@@ -1,0 +1,205 @@
+http://www.1point3acres.com/bbs/thread-116171-1-1.html
+
+TTL cache
+https://git.eclipse.org/r/#/c/41522/1/org.eclipse.scout.commons/src/org/eclipse/scout/commons/TTLCache.java
+
+题目是实现一个hashtable能够对每个entry设置ttl(time to live)，ttl一过就删除。一开始感觉有点像LRUCache，就往linkedlist上想了，但是纠结于什么时候check是否要删除entry，后来又想每个entry插入的时候开一个thread，然后ttl后这个thread把对应entry删除，问了有什么优缺点，race condition，如果系统thread没有准时删除怎么办？反正各种跪。
+http://massivetechinterview.blogspot.com/2015/10/java-ttl-cache.html
+
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+//http://www.concretepage.com/java/example_timeunit_java
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+
+class TTLCache<K,V> {
+  private class TTLCacheValue {
+    private long timestamp;
+    private V value;
+    public TTLCacheValue(V value,long ttl) {
+      this.timestamp = System.currentTimeMillis() + ttl;
+      this.value = value;
+    }
+    public TTLCacheValue(V value) {
+      this.timestamp = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(2);
+//      this.ttl = TimeUnit.SECONDS.toMillis(60);// 60 sec. default
+      this.value = value;
+    }
+    public long getTimeStamp() {
+      return timestamp;
+    }
+    public V getValue() {
+      return value;
+    }
+    
+  }
+  private Map<K,TTLCacheValue> itemMap;
+  private final Object mapLock = new Object();
+  public TTLCache() {
+    itemMap = new HashMap<K,TTLCacheValue>();
+  }
+  public void clear() {
+    synchronized (mapLock) {
+      itemMap.clear();
+    }
+  }
+  public void put(K key,V value) {
+    synchronized(mapLock) {
+      itemMap.put(key,new TTLCacheValue(value));  
+    }  
+  }
+  public Set<K> keySet() {
+    HashSet<K> list = new HashSet<K>();
+    synchronized(mapLock) {
+      Iterator<K> itr = itemMap.keySet().iterator();
+      while(itr.hasNext()) {
+        K key = itr.next();
+        if(!isexpired(itemMap.get(key))) {
+          list.add(key);
+        } else {
+          itr.remove();
+        }
+      }
+    }
+    return list;
+  }
+  public void remove(K key) {
+    synchronized(mapLock) {
+      itemMap.remove(key);
+    }
+  }
+  public V get(K key) {
+    TTLCacheValue cacheValue = getValue(key);
+    if(cacheValue != null) {
+      return cacheValue.getValue();
+    }
+    return null;
+  }
+  public Map<K,V> getEntries() {
+    Map<K,V> map = new HashMap<K,V>();
+    synchronized(mapLock) {
+      Iterator<Map.Entry<K,TTLCacheValue>> iter = itemMap.entrySet().iterator();
+      while(iter.hasNext()) {
+        Map.Entry<K,TTLCacheValue> e = iter.next();
+        if(!isexpired(e.getValue())) {
+          map.put(e.getKey(),e.getValue().getValue());  
+        } else {
+          iter.remove();
+        }
+      }
+      //A map entry (key-value pair). The Map.entrySet method returns a collection-view of the map, whose elements are of this class. The only way to obtain a reference to a map entry is from the iterator of this collection-view. These Map.Entry objects are valid only for the duration of the iteration; more formally, the behavior of a map entry is undefined if the backing map has been modified after the entry was returned by the iterator, except through the setValue operation on the map entry.
+        //entrySet returns Set<Map.Entry<K,V>>
+    }
+    return map;
+  }
+  public TTLCacheValue getValue(K key) {
+    synchronized(mapLock) {
+      TTLCacheValue currTTLvalue = itemMap.get(key);
+      if(currTTLvalue != null) {
+        if(!isexpired(currTTLvalue)) {
+          return currTTLvalue;
+        } else {
+          itemMap.remove(key);
+        }
+      }
+    }
+    return null;
+  }
+  public int size() {
+    synchronized(mapLock) {
+      return itemMap.size();
+    }
+  }
+  public boolean containsKey(K key) {
+      TTLCacheValue cacheValue = getValue(key);
+      if(cacheValue != null) {
+        return true;
+      }
+      return false;
+  }
+  public boolean containsValue(V value) {
+    for(K key : keySet()) {
+      V currValue = get(key);
+      if(currValue == value || (currValue != null && currValue.equals(value))) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  
+  //http://docs.oracle.com/javase/7/docs/api/java/util/HashMap.html
+  //http://docs.oracle.com/javase/7/docs/api/java/util/Collection.html
+  /*
+    Collection<String> collectionValues = mapStudent.values();
+    for(String s: collectionValues){
+      System.out.println(s);
+    }  
+  */
+  public Collection<V> values() {
+    List<V> list = new ArrayList<V>();
+    synchronized(mapLock) {
+      Iterator<TTLCacheValue> itr = itemMap.values().iterator();
+      while(itr.hasNext()) {
+        TTLCacheValue currTTLCacheValue = itr.next();
+        if(!isexpired(currTTLCacheValue)) {
+          list.add(currTTLCacheValue.getValue());
+        } else {
+          itr.remove();
+        }
+      }
+    }
+    return list;
+  }
+  public boolean isexpired(TTLCacheValue currTTLvalue){
+    return currTTLvalue.getTimeStamp() <= System.currentTimeMillis();
+  }
+}
+
+
+class Solution {
+  public static void main(String[] args) {
+    TTLCache<Integer,Integer> cache = new TTLCache<Integer,Integer>();
+    cache.put(1,1);
+    cache.put(2,3);
+    cache.put(4,7);
+    System.out.println(cache.get(1));
+    try{
+      Thread.sleep(1000);
+    }catch(InterruptedException e){
+      System.out.println(e);
+    }  
+     for(Integer key : cache.keySet()) {
+       System.out.print(key);
+     }
+
+    Collection<Integer> collectionValues = cache.values();
+    for(Integer s: collectionValues){
+      System.out.println(s);
+    }
+    System.out.println(cache.getEntries());
+    /*
+    Map<Integer,Integer> newMap = new HashMap<Integer,Integer>();
+    newMap.put(1,3);
+    newMap.put(2,4);
+    Iterator<Integer> itr = newMap.values().iterator();
+    if(itr.hasNext()) {
+      itr.next();
+      
+//       remove()
+// Removes from the underlying collection the last element returned by this iterator
+// you need to call next first to remove the last element returned by the iterator.
+
+     
+      itr.remove();
+      //itr.remove();
+    }
+    System.out.println(newMap.containsKey(1));
+    */
+  }
+}
