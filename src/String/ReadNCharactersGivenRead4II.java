@@ -31,7 +31,7 @@ class read extends Reader4{
 				curr=super.read4(buffer);
 			}
 			if(bufsize == 0 && curr<4){
-				eof=false;
+				eof=true;
 			}
 			int length=Math.min(curr, n-read);
 			for(int i=0;i<length;++i){
