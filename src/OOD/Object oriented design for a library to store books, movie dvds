@@ -1,0 +1,18 @@
+Question: Design a library shelf which can store books or digital media also like CD/DVD. The design should be accommodate features so that  responding to user queries would be easy and the library has the ability to store new content types in a easy way.
+
+Lets attempt to describe the library we want to design. Our library can store books, movie dvds to start with. Books and DVDs are different content types. Each content type can have different genres. For e.g in books we have fiction, romance, non fiction etc. Similarly in DVDS we have action, drama, documentary etc. Lets assume for simplicity that the books and DVDs the library gets are already tagged with that genre information.
+
+Now i can visualize the library as one that contains different sections(one for content type). Each section has different genres, and each genre has a stand where the items(books, dvds) are stored.
+
+Typical user queries would be 
+ * search books by author xxx
+ * search books with title containing certain words 
+ * search movies with title containing certain words
+ * search movies directed by yyy
+
+User searches for the contents by specifying details about what is it he is looking for. Like which genre, which content type, author details, or any keywords to search in title etc. All these details are specified via SearchFilter. Based on the above description, below is the design for the library
+//library for books,dvds.png
+
+This design extends itself to be able to support new content types, new genre types easily
+Given that we have been asked to design a library to just store the items above design should work.
+(If you want to add the feature of renting the items, we should store information about how many items we have, available/lent status for each item etc. The design for library where users can borrow books is discussed in Object oriented design for a library to borrow and renew books)
