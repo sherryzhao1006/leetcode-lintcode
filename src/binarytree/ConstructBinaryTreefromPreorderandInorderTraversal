@@ -1,0 +1,48 @@
+/*Given preorder and inorder traversal of a tree, construct the binary tree.
+
+Note:
+You may assume that duplicates do not exist in the tree.
+*/
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        if(preorder == null || inorder == null){
+            return null;
+        }
+        if(preorder.length != inorder.length) return null;
+        return helper(preorder,0,preorder.length-1,inorder,0,inorder.length-1);
+    }
+    public TreeNode helper(int[] preorder,int pstart,int pend,int[] inorder,int istart,int iend){
+        if(pstart>pend || istart>iend){
+            return null;
+        }
+        int val=preorder[pstart];
+        int index=findroot(inorder,val,istart,iend);
+        TreeNode left=helper(preorder,pstart+1,pstart+index-istart,inorder,istart,index-1);
+               // TreeNode left = helper(preorder,preS+1,preS+index-inS,inorder,inS,index-1);
+
+        TreeNode right=helper(preorder,pstart+index-istart+1,pend,inorder,index+1,iend);
+        TreeNode root=new TreeNode(val);
+        root.left=left;
+        root.right=right;
+        return root;
+    }
+    public int findroot(int[] inorder,int val,int start,int end){
+        while(start<=end){
+            if(inorder[start]==val){
+                return start;
+            }
+            start++;
+        }
+        return -1;
+    }
+    
+}
