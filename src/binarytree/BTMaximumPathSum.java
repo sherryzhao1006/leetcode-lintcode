@@ -63,21 +63,23 @@ public class BTMaximumPathSum {
 		two.right=six;
 		System.out.println(maxPathSum(root));
 	}
-	public static int maxPathSum(TreeNode root) {
-    	if(root == null){
-    		return 0;
-    	}
-    	maxSum(root);
-    	return maxvalue;
+	private int sum=Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+        helper(root);
+        return sum;
     }
-    public static int maxSum(TreeNode root){
-    	if(root == null){
-    		return 0;
-    	}
-    	int left=Math.max(0,maxSum(root.left));
-    	int right=Math.max(0,maxSum(root.right));
-    	maxvalue=Math.max(maxvalue,root.val+left+right);
-    	return Math.max(left,right)+root.val;
+    public int helper(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+        int left=Math.max(helper(root.left),0);
+        int right=Math.max(helper(root.right),0);
+        int val=root.val+left+right;
+        sum=Math.max(val,sum);
+        return Math.max(left,right)+root.val;
     }
 
 }
