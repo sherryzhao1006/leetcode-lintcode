@@ -1,0 +1,78 @@
+/*All DNA is composed of a series of nucleotides abbreviated as A, C, G, and T, for example: "ACGAATTCCG". When studying DNA, it is sometimes useful to identify repeated sequences within the DNA.
+
+Write a function to find all the 10-letter-long sequences (substrings) that occur more than once in a DNA molecule.
+
+For example,
+
+Given s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT",
+
+Return:
+["AAAAACCCCC", "CCCCCAAAAA"].
+*/
+
+public class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+        List<String> result=new ArrayList<String>();
+        if(s == null || s.length() <=9) return result;
+        Map<String,Integer> map=new HashMap<String,Integer>();
+        for(int i=0;i<=s.length()-10;++i){
+            String str=s.substring(i,i+10);
+            if(map.containsKey(str)){
+                map.put(str,map.get(str)+1);
+            }else{
+                map.put(str,1);
+            }
+        }
+        for(String str:map.keySet()){
+            if(map.get(str)>1)
+                result.add(str);
+        }
+        return result;
+    }
+}
+
+public class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+    
+        List<String> res = new ArrayList<String>();
+        if(s == null || s.length() == 0 || s.length() < 10)
+            return res;
+        Set<Integer> codeSet = new HashSet<Integer>();
+        //to save code. if code exists me it appear more than one time. then put into string hashset
+        Set<String> resultSet = new HashSet<String>();
+        for(int i=9;i < s.length(); i++) {
+            String curr = s.substring(i-9,i+1);
+            int code = encode(curr);
+            if(codeSet.contains(code)) {
+                resultSet.add(curr);
+            } else {
+                codeSet.add(code);
+            }
+            
+        }
+        for(String curr : resultSet) {
+            res.add(curr);
+        }
+        return res;
+    }
+    public  int encode(String curr) {
+        int sum = 0;
+        for(int i=0; i < curr.length(); i++) {
+            switch(curr.charAt(i)) {
+                case 'C':
+                    sum = sum*10;
+                    break;
+                case 'A':
+                    sum = sum*10+1;
+                    break;
+                case 'G':
+                    sum = sum*10+2;
+                    break;
+                case 'T':
+                    sum = sum*10+3;
+                    break;
+            }
+        }
+        return sum;
+    }
+}
