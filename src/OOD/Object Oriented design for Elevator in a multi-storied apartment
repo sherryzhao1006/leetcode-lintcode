@@ -34,3 +34,48 @@ To extend this to multiple elevators, each elevator will have a corresponding el
 FloorButton's placeRequest adds a request to the common area which is accessible to all controller. ElevatorButton's placeRequest adds a request to the controller's internal queue as only one elevator is supposed to serve it.
 
 Each elevator controller runs as a separate thread and checks on if it can process a floor request along with processing requests made by its own elevator button presses.
+
+Elevator
+========
+int currFloor(state)
+boolean upOrDown;
+=============
+run(request){
+  
+}
+  
+
+
+elevator controller
+===============
+Elevator elev;
+elevatorrequest er;
+==============
+start(){
+  while(){
+    currReq= er.remove();
+    elevator.run(currReq);
+  }
+  
+}
+press(request re){
+  er.add(re);
+}
+  
+
+  
+  
+  
+elevatorrequest
+===============
+Queue<request> q;
+===============
+add();
+remove();
+
+
+request
+========
+  int start;
+  int des;
+  enum direction;
