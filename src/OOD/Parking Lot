@@ -156,3 +156,39 @@ class Ticket {
             get { return ParkedVehicle == null; }
         }
     }
+
+
+Parking Lot
+============
+Stack<ParkingSpace> small,medium,large;
+Map<Ticket,parkingSpace> map;
+===============
+Ticket Park(car){
+  switch(car.size){
+    case "small" :
+        if(!small.isEmpty()){
+            Ti t;
+            ParkingSpace sp=small.pop();
+            map.put(t,sp);
+            sp.setCar(car);
+          return t;
+        }
+        break;
+    case "medium":
+        break;
+    case "large":
+        break;
+      return null;
+  }
+}
+ParkingSpace unpark(Ticket t){
+  ParkingSpace sp=map.get(t);
+  Car car=sp.getCar();
+  sp.setCar=null;
+  map.remove(t);
+  switch(car.size){
+      small.push(sp);
+  }
+  
+  return sp;
+}
