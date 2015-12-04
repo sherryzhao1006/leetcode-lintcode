@@ -1,0 +1,60 @@
+/*Given two words (beginWord and endWord), and a dictionary's word list, find the length of shortest transformation sequence from beginWord to endWord, such that:
+
+Only one letter can be changed at a time
+Each intermediate word must exist in the word list
+For example,
+
+Given:
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot","dot","dog","lot","log"]
+As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog",
+return its length 5.
+
+Note:
+Return 0 if there is no such transformation sequence.
+All words have the same length.
+All words contain only lowercase alphabetic characters.
+*/
+
+public class Solution {
+    public int ladderLength(String beginWord, String endWord, Set<String> wordList) {
+        if(wordList == null || wordList.size() == 0 || beginWord.equals(endWord)){
+            return 0;
+        }
+        Set<String> visit=new HashSet<String>();
+        visit.add(beginWord);
+        int count=1;
+        Queue<String> queue=new LinkedList<String>();
+        queue.add(beginWord);
+        wordList.remove(beginWord);
+        while(!queue.isEmpty()){
+            int size=queue.size();
+            for(int j=0;j<size;++j){
+                String cur=queue.poll();
+                for(int i=0;i<cur.length();++i){
+                    for(char a='a';a<='z';++a){
+                      if(a==cur.charAt(i)) continue;
+                        String rep=replace(cur,i,a);
+                        if(rep.equals(endWord)) return count+1;
+                      if (visit.contains(rep)) {
+                        continue;
+                    }
+                        if(wordList.contains(rep)){
+                            queue.add(rep);
+                            wordList.remove(rep);
+                            visit.add(rep);
+                        }
+                    }
+                }
+            }
+            count++;
+        }
+        return 0;
+    }
+    public String replace(String cur,int i,char a){
+        char[] c=cur.toCharArray();
+        c[i]=a;
+        return new String(c);
+    }
+}
