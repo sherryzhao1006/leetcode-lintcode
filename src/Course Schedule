@@ -1,0 +1,65 @@
+/*There are a total of n courses you have to take, labeled from 0 to n - 1.
+
+Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]
+
+Given the total number of courses and a list of prerequisite pairs, is it possible for you to finish all courses?
+
+For example:
+
+2, [[1,0]]
+There are a total of 2 courses to take. To take course 1 you should have finished course 0. So it is possible.
+
+2, [[1,0],[0,1]]
+There are a total of 2 courses to take. To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.
+*/
+public class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        if(prerequisites == null || prerequisites.length == 0){
+            return numCourses != 0;
+        }
+        Map<Integer,List<Integer>> map=new HashMap<Integer,List<Integer>>();
+        Map<Integer,Integer> status=new HashMap<Integer,Integer>();
+        for(int i=0;i<prerequisites.length;++i){
+            int cur=prerequisites[i][0];
+            int pre=prerequisites[i][1];
+            status.put(cur,0);
+            status.put(pre,0);
+            if(map.containsKey(pre)){
+                map.get(pre).add(cur);
+            }else{
+                List<Integer> sub=new ArrayList<Integer>();
+                sub.add(cur);
+                map.put(pre,sub);
+            }
+        }
+        
+        for(int pre:map.keySet()){
+            if(status.get(pre) == 0){
+                if(!helper(map,status,pre)){
+                    return false;
+                }
+            }
+        }
+        return numCourses>=status.size();
+    }
+    public boolean helper(Map<Integer,List<Integer>> map,Map<Integer,Integer> status,int key){
+        if(status.get(key) == 2){
+            return true;
+        }
+        if(status.get(key) == 1){
+            return false;
+        }
+        status.put(key,1);
+        if(map.get(key) == null){
+            status.put(key,2);
+            return true;
+        }
+        for(int cur:map.get(key)){
+            if(!helper(map,status,cur)){
+                return false;
+            }
+        }
+        status.put(key,2);
+        return true;
+    }
+}
