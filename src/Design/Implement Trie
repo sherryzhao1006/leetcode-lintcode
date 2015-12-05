@@ -1,0 +1,90 @@
+/*Implement a trie with insert, search, and startsWith methods.
+
+Note:
+You may assume that all inputs are consist of lowercase letters a-z.
+*/
+
+class TrieNode {
+    Character c;//put what's char in this part
+    boolean isLeaf;
+    Map<Character,TrieNode> children;
+    // Initialize your data structure here.
+    public TrieNode() {
+        this.children=new HashMap<Character,TrieNode>();
+        this.isLeaf=false;
+    }
+    public TrieNode(char c){
+        this.c=c;
+        this.children=new HashMap<Character,TrieNode>();
+        this.isLeaf=false;
+    }
+}
+
+public class Trie {
+    private TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    public void insert(String word) {
+        if(word == null || word.length() == 0){
+            return;
+        }
+        TrieNode cur=root;
+        for(int i=0;i<word.length();++i){
+            char curChar=word.charAt(i);
+            if(cur.children.containsKey(curChar)){
+                cur=cur.children.get(curChar);
+            }else{
+                TrieNode node=new TrieNode(curChar);
+                cur.children.put(curChar,node);
+                cur=node;
+            }
+            if(i == word.length() -1){
+                cur.isLeaf=true;
+            }
+        }
+    }
+
+    // Returns if the word is in the trie.
+    public boolean search(String word) {
+        if(word == null || word.length() == 0){
+            return false;
+        }
+        TrieNode cur=root;
+        for(int i=0;i<word.length();++i){
+            char curChar=word.charAt(i);
+            if(cur.children.containsKey(curChar)){
+                cur=cur.children.get(curChar);
+            }else{
+                return false;
+            }
+        }
+        return cur.isLeaf;
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    public boolean startsWith(String prefix) {
+        if(prefix == null || prefix.length() == 0){
+            return false;
+        }
+        TrieNode cur=root;
+        for(int i=0;i<prefix.length();++i){
+            char curChar=prefix.charAt(i);
+            if(cur.children.containsKey(curChar)){
+                cur=cur.children.get(curChar);
+            }else{
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+// Your Trie object will be instantiated and called as such:
+// Trie trie = new Trie();
+// trie.insert("somestring");
+// trie.search("key");
