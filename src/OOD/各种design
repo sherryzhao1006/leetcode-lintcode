@@ -1,0 +1,126 @@
+然后直接考察 OO 编程, 也很基础, 写 牌 和 一副牌, 两个class, 在一副牌那里写发牌
+               洗牌, 还有重新开始一副牌. 
+Cards
+
+
+
+
+
+
+
+
+
+
+Parking Lot
+============
+Stack<ParkingSpace> small,medium,large;
+Map<Ticket,parkingSpace> map;
+===============
+Ticket Park(car){
+  switch(car.size){
+    case "small" :
+        if(!small.isEmpty()){
+            Ti t;
+            ParkingSpace sp=small.pop();
+            map.put(t,sp);
+            sp.setCar(car);
+          return t;
+        }
+        break;
+    case "medium":
+        break;
+    case "large":
+        break;
+      return null;
+  }
+}
+ParkingSpace unpark(Ticket t){
+  ParkingSpace sp=map.get(t);
+  Car car=sp.getCar();
+  sp.setCar=null;
+  map.remove(t);
+  switch(car.size){
+      small.push(sp);
+  }
+  
+  return sp;
+}
+
+Parking Space
+=============
+enum size;
+Car car;
+int spaceNum;
+
+
+Car
+====
+enum size;
+String licenseId; 
+
+Ticket
+========
+Car car;
+int id;
+
+
+=========================================================================
+  TV
+  
+  
+  Controller
+    TV tv
+    Request queue
+  ============
+    press()
+    start()
+  
+  
+=========================================================================
+
+
+Elevator
+========
+int currFloor(state)
+boolean upOrDown;
+=============
+run(request){
+  
+}
+  
+
+
+elevator controller
+===============
+Elevator elev;
+elevatorrequest er;
+==============
+start(){
+  while(){
+    currReq= er.remove();
+    elevator.run(currReq);
+  }
+  
+}
+press(request re){
+  er.add(re);
+}
+  
+
+  
+
+  
+elevatorrequest
+===============
+Queue<request> q;
+===============
+add();
+remove();
+
+
+request
+========
+  int start;
+  int des;
+  enum direction;
+  
