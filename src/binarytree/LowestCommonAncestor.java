@@ -61,17 +61,45 @@ public class LowestCommonAncestor {
 		
 	}
 	//Binary search tree
-	public TreeNode lowestCommonAncestorBST(TreeNode root, TreeNode A, TreeNode B) {
-        if(root == null || root == A || root == B){
+	/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    //recursive
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null || root.val==p.val || root.val==q.val){
             return root;
         }
-        if(root.val>A.val && root.val>B.val){
-            return lowestCommonAncestorBST(root.left,A,B);
-        }
-        if(root.val<A.val && root.val<B.val){
-           return lowestCommonAncestorBST(root.right,A,B);
-        }
-        return root;
+        if(root.val<p.val && root.val<q.val){
+            return lowestCommonAncestor(root.right,p,q);
+        }else if(root.val>p.val && root.val>q.val){
+            return lowestCommonAncestor(root.left,p,q);
+        }else return root;
     }
+    //non-recursive
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null || root.val ==p.val ||root.val == q.val){
+            return root;
+        }
+        TreeNode cur=root;
+        while(cur != null){
+            if(cur.val == p.val || cur.val == q.val){
+                return cur;
+            }else if(cur.val<p.val && cur.val<q.val){
+                cur=cur.right;
+            }else if(cur.val>p.val && cur.val>q.val){
+                cur=cur.left;
+            }else return cur;
+        }
+        return null;
+    }
+
+}
 
 }
