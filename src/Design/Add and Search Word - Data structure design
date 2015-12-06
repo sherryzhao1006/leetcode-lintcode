@@ -1,0 +1,107 @@
+/*Design a data structure that supports the following two operations:
+
+void addWord(word)
+bool search(word)
+search(word) can search a literal word or a regular expression string containing only letters a-z or .. A . means it can represent any one letter.
+
+For example:
+
+addWord("bad")
+addWord("dad")
+addWord("mad")
+search("pad") -> false
+search("bad") -> true
+search(".ad") -> true
+search("b..") -> true
+*/
+class TrieNode {
+    Character c;//put what's char in this part
+    boolean isLeaf;
+    Map<Character,TrieNode> children;
+    // Initialize your data structure here.
+    public TrieNode() {
+        this.children=new HashMap<Character,TrieNode>();
+        this.isLeaf=false;
+    }
+    public TrieNode(char c){
+        this.c=c;
+        this.children=new HashMap<Character,TrieNode>();
+        this.isLeaf=false;
+    }
+}
+public class WordDictionary {
+        private TrieNode root=new TrieNode();
+
+    // Adds a word into the data structure.
+    public void addWord(String word) {
+        if(word == null || word.length() == 0){
+            return;
+        }
+        TrieNode cur=root;
+        for(int i=0;i<word.length();++i){
+            char curChar=word.charAt(i);
+            if(cur.children.containsKey(curChar)){
+                cur=cur.children.get(curChar);
+            }else{
+                TrieNode node=new TrieNode(curChar);
+                cur.children.put(curChar,node);
+                cur=node;
+            }
+            if(i == word.length() -1){
+                cur.isLeaf=true;
+            }
+        }
+    }
+
+    // Returns if the word is in the data structure. A word could
+    // contain the dot character '.' to represent any one letter.
+    public boolean search(String word) {
+        if(word == null || word.length() == 0){
+            return false;
+        }
+        TrieNode cur=root;
+        return searchhelper(word,0,cur);
+    }
+    public boolean searchhelper(String word,int index,TrieNode root){
+        if(index == word.length()){
+            return root != null && root.isLeaf == true;
+        }
+        char curChar=word.charAt(index);
+        if(curChar == '.'){
+            for(char next:root.children.keySet()){
+                if(searchhelper(word,index+1,root.children.get(next))) return true;
+            }
+        }else{
+            if(root.children.containsKey(curChar)){
+                root=root.children.get(curChar);
+                return searchhelper(word,index+1,root);
+            }else return false;
+        }
+        return false;
+    }
+    
+    //     // Returns if the word is in the trie.
+    // public boolean search(String word) {
+    //     if(word == null || word.length() == 0){
+    //         return false;
+    //     }
+    //     TrieNode cur=root;
+    //     for(int i=0;i<word.length();++i){
+    //         char curChar=word.charAt(i);
+    //         if(curChar == '.'){
+                
+    //         }
+    //         if(cur.children.containsKey(curChar)){
+    //             cur=cur.children.get(curChar);
+    //         }else{
+    //             return false;
+    //         }
+    //     }
+    //     return cur.isLeaf;
+    // }
+}
+
+// Your WordDictionary object will be instantiated and called as such:
+// WordDictionary wordDictionary = new WordDictionary();
+// wordDictionary.addWord("word");
+// wordDictionary.search("pattern");
