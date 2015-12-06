@@ -1,4 +1,199 @@
-/*
+CC 8.2
+
+  public class ClassicSingleton* {
+
+   private static ClassicSingleton* instance = null;
+   private ClassicSingleton() {
+      // Exists only to defeat instantiation.
+   }
+   public static ClassicSingleton getInstance() {
+      if(instance == null) {
+         instance = new ClassicSingleton();
+      }
+      return instance;
+   }
+}
+===============================  
+
+
+  
+Call ==> CallerSystem => Employee  
+
+
+
+class CallerSystem {
+  
+List<List<Employee>> canAccept;
+List<List<Call>> callWait;//waiting list
+private final int level=3;
+private final int NUM_RESPONDENTS=10;
+private final int NUM_MANAGER=10;
+private final int NUM_DIRECTOR=10;
+private static CallerSystem instance=null;
+private CallerSystem(){
+  
+}
+public static CallerSystem getInstance(){
+  if(instance == null){
+    instance=new CallerSystem();
+  }
+  return instance;
+}
+  
+public Employee getAvailable(){}
+public void dispatchCall(String caller){
+  Call newCall = new Call(caller);
+  disptachCall(newCall);
+}
+public void dispatchCall(Call call) {
+  Employee empl=getAvailable();
+  if(empl == null){//no one can accept the call
+    callWait.get(call.getRank().getValue()).add(call);
+  }else{
+    empl.receiveCall(call);
+    call.setEmployee(empl);
+  }
+}
+  
+  
+===============  
+
+class Employee
+Call curCall;
+Rank rank;
+public void receiveCall(Call curCall){
+  this.curCall=curCall;
+}
+public void disconnect(){
+  this.curCall=null;
+}
+public void escalate() {
+  ......
+}
+public Call getCall(){
+  return this.curCall;
+}
+
+===============
+  
+ class Respondent extends Employee {
+   public Respondent(){
+     this.rank=Rank.RESPONDENT;
+   }
+ }
+  
+  
+class Manager extends Employee {
+  public Manager(){
+    this.rank=Rank.MANAGER;
+  }
+  
+}
+  
+
+class Director extends Employee {
+    public Director(){
+    this.rank=Rank.DIRECTOR;
+  }
+}
+  
+  
+===============  
+class Call 
+==========
+private Rank rank;
+String caller;
+private Employee handler;
+
+public Call(String caller) {
+  this.calller = caller;
+  rank = Rank.RESPONDENT;
+}
+public void setEmployee(Employee employee){
+  this.handler=employee;
+}
+getcaller;
+public void setRank(Rank r){
+  this.rank=r;
+}
+
+public void disconnect(){
+  
+}
+public Rank getRank(){
+  return rank;
+}
+
+
+
+public enum Rank{
+  RESPONDENT(0), MANAGER(1),DIRECTOR(2);
+  private int rank;
+  private Rank(int rank){
+    this.rank=rank;
+  }
+  public Rank getRank(){
+    return this.rank;
+  }
+}
+======================================================================
+
+General Game
+=================================================================
+public class Board {
+    Cell[][] board;
+    public Board(int Nx, int Ny) {
+        board = new Cell[Nx][Ny];
+    }
+    public boolean checkNeighbors(Cell currCell) {
+
+        return true;
+    }
+//    public void initializeBoard()
+}
+
+public class Cell {
+    private int x;
+    private int y;
+    boolean state;
+    public Cell(int x, int y) {
+        this.x = x;
+        this. y = y;
+        this.state = true;
+    }
+    public void updateCellState(boolean state){
+        this.state = state;
+    }
+
+}
+//Game of Life
+
+public class GameOfLife {
+    Board board;
+    public void initializeGame(int Nx, int Ny) {
+        board = new Board(Nx,Ny);
+    }
+    public void play() {
+      
+    }
+    public static void main(String[] args)
+    {
+
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 然后直接考察 OO 编程, 也很基础, 写 牌 和 一副牌, 两个class, 在一副牌那里写发牌
                洗牌, 还有重新开始一副牌.
 Deck of cards
