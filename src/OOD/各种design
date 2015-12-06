@@ -1,6 +1,67 @@
+/*
 然后直接考察 OO 编程, 也很基础, 写 牌 和 一副牌, 两个class, 在一副牌那里写发牌
-               洗牌, 还有重新开始一副牌. 
-Cards
+               洗牌, 还有重新开始一副牌.
+Deck of cards
+=============================
+
+  
+public enum Type{
+  Heart(0),Club(1),Spade(2),Diamond(3)
+  private int val;
+  private type(int val){
+    this.val=val;
+  }
+  public int getVal(){
+    return this.val;
+  }
+  public Type getType(){
+    
+  }
+}
+
+  
+Card//每一张牌
+==========
+Type t;
+private int value;//牌面上的值
+private boolean aval;
+public Card(Type t,int val);
+public int getValue();
+public int getType();
+public void makeAvail(){ this.aval = true;} 
+public void changeAvail(){this.aval=false;}
+
+
+Player
+======================
+List<Card> hasCard;
+private int score;
+public Player(){};
+public void getCard(Card card);//
+public int getScore();
+
+
+Game
+=======================
+List<Card> cards;
+List<Player> player;
+public Game(List<Card> cards,List<Player> player);
+public void shuffle()//{
+  int size=this.cards.size();
+  for(int i=0;i<size;++i){
+    Random rn = new Random();
+    int answer = rn.nextInt(size-i)+i;//rn.nextInt(size)返回的值是0-(size-1)
+    Card tmp=cards.get(i);
+    cards.set(i,cards.get(answer));
+    cards.set(answer,tmp);
+  }
+}
+public void play(){
+  
+}
+
+*/
+
 
 
 
