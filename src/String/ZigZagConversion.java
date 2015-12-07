@@ -67,7 +67,7 @@ public class ZigZagConversion {
         int layer=0;
         boolean down=true;
         for(int i=0;i<s.length();++i){
-            br[layer].append(s.charAt(i));
+            br[layer].append(s.charAt(i));//!!!!!!!!!!!important!!!!!!!!!!!!!!!!!!
             if(down){
                 layer++;
             }else{
