@@ -1,3 +1,53 @@
+CC 8.3 Musical JukeBox
+class User{
+  String name;
+  private int id;
+  public User(String name,int id){}
+  public void setName(String name){}
+  public String getName(){}
+  public void setId(int id){}
+  public int getId(){}
+} 
+class CD{
+  String name;
+  int size;
+  List<Song> songs;
+  int id;
+}
+class Song{
+  String name;
+  int id;
+  String singer;
+}
+    
+class JukeBox{
+  public User user;
+  public SongPlayer songPlayer;
+  List<CD> cds;  
+  PlayList currPlayList;
+  
+  public JukeBox(User user,SongPlayer songPlayer,List<CD> cds){
+    currPlayList = new PlayList();
+  }
+  public void addSongFromCDToPlaylist(int cd_id,String songName) {
+    Song currSong = cds.get(cd_id).getSong(songName);
+    currPalyList.addSong(song);
+  }
+}
+
+class PlayList{
+  String name;
+  int id;
+  Queue<Song> songs;
+  public PlayList(String name,int id){}
+  public void setName...;
+  public boolean addSong(Song song){}
+  public Song getNextSong(){
+    return queue.pop();
+  }
+  public boolean deleteSong(Song song){}
+}
+
 CC 8.7
 Chat server
 requirement:
