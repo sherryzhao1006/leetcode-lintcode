@@ -1,3 +1,45 @@
+贡献下oo design题：
+设计一个大学申请系统，每个学生有若干志愿，判断学生能否被一个学校录取。
+class Student{
+  String name;
+  private int id;
+  private int scroe;
+  List<Preference> preferences;
+  public Student(String name,int id,List<Preference> preferences){};
+  public void set get...;
+  public boolean addPreference(Preference pre){};
+  public boolean deletePreference(Preference pre){};
+}
+  
+class Preference{
+  School school;
+  Degree degree;
+  Student student;
+  boolean success;
+  public Preference(School school,Degree degree,Student student){}
+  public void set get...;
+}
+
+class School{
+  String name;
+  private int id;
+  List<Degree> degrees;
+}
+ 
+class Degree(Major){
+  String name;
+  private int id;
+  private int minScore;
+}
+
+class System {  
+  List<Student> students;
+  List<School> schools;
+  public System(){};
+  public void match(Student student){}//match student score with degree score
+  public boolean searchWithSchool(Student student,School school){}//iterate pre to check with school
+}
+
 CC 8.3 Musical JukeBox
 class User{
   String name;
