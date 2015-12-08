@@ -92,6 +92,7 @@ class Point{
 		this.dist=Math.sqrt(x*x+y*y);
 		System.out.println(x+" "+y+" "+dist);
 	}
+	public void setDist(Point)
 	public double getDist(){
 		return dist;
 	}
