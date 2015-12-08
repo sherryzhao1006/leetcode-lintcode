@@ -1,3 +1,5 @@
+http://flockdraw.com/gallery/view/2108306
+http://flockdraw.com/gallery/view/2108310
 import java.util.*;
 public class DataStreamMedian {
 
