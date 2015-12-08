@@ -1,84 +1,75 @@
-public interface PointsOnAPlane {
-    /**
-     * Stores a given point in an internal data structure
-     */
-    void addPoint(Point point);
- 
-    /**
-     * For given 'center' point returns a subset of 'p' stored points
-     * that are closer to the center than others.
-     *
-     * E.g.
-     * Stored:
-     * (1, 1)
-     * (0, 3)
-     * (0, 4)
-     * (0, 5)
-     * (0, 6)
-     * (0, 7)
-     *
-     * findNearest(new Point(0, 0), 3) -> (1, 1), (0, 3), (0, 4)
-     */
-    
-    Collection<Point> findNearest(Point center, int p);
- 
-    static class Point {
-        final int x;
-        final int y;
-        double d;
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-        public double getDist(Point center){
-          return Math.sqrt((x-center.x)*(x-center.x)+(y-center.y)*(y-center.y));
-        }
-    }
-}
-class PointComparator implements Comparator<Point> {
-    Point center = null;
-   
-    public PointComparator(Point center) {
-        this.center = center;
-    }
-   
-    @Override
-    public int compare(Point p1, Point p2) {
-        double dist1 = p1.getDist(center);
-        double dist2 = p2.getDist(center);
-        int diff = Double.compare(dist1,dist2);
-        return diff;
-    }
-}
+import java.io.*;
+import java.util.*;
 
-public class myPointsOnAPlane implements PointsOnAPlane{
-   
-    private List<Point> pts ;
-    public myPointsOnAPlane() {
-        pts = new ArrayList<Point>();
-    }
-    @Override
-    void addPoint(Point point) {
-        pts.add(point);
-    }
-   
-    @Override
-    Collection<Point> findNearest(Point center, int p) {
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
 
-        PriorityQueue<Point> q = new PriorityQueue<Point>(p, new PointComparator(center));
-        for(int i=0; i < pts.size(); i++) {
-            if(i < p) {
-                q.add(pts.get(i));
-            } else {
-                Point mycurrPoint = pts.get(i);
-                if(mycurrPoint.getDist(center) < q.peek().getDist(center)) {
-                    q.poll();
-                    q.add(mycurrPoint);
-                }
-            }
-        }
-        return q;
+class Solution {
+  public static void main(String[] args) {
+    System.out.println("Hello, World!");
+    Point p1=new Point(3,4);
+    Point p2=new Point(6,9);
+    List<Point> list=new ArrayList<Point>();
+    list.add(p1);
+    list.add(p2);
+    Points points=new Points(list);
+    points.AddPoint(new Point(1,2));
+    for(Point p:points.findKNearestPoint(new Point(0,0),1)){
+      System.out.println(p.x+" "+p.y);
     }
+  }
+}
+class Point{
+  double x,y,dist;
+  public Point(double x,double y){
+    this.x=x;
+    this.y=y;
+    this.dist=0;
+  }
+  public double getDist(Point point){
+    return Math.sqrt((this.x-point.x)*(this.x-point.x)+(this.y-point.y)*(this.y-point.y));
+  }
+}
+interface PointsOnAPlane{
+  void AddPoint(Point point);
+  Collection<Point> findKNearestPoint(Point center,int k);
+}
+class Points implements PointsOnAPlane{
+  private List<Point> list;
+  public Points(List<Point> list){
+    this.list=list;
+  }
+  public void AddPoint(Point point){
+    list.add(point);
+  }
+  public Collection<Point> findKNearestPoint(Point center,int k){
+    int size=0;
+    PriorityQueue<Point> pq=new PriorityQueue<Point>(k,new PointComparator(center));
+    for(Point p:list){
+      if(pq.size()<k){
+        pq.add(p);
+      }else{
+        if(p.getDist(center)<pq.peek().getDist(center)){
+          pq.poll();
+          pq.add(p);
+        }
+      }
+    }
+    return pq;
+  }
+}
+class PointComparator implements Comparator<Point>{
+  private Point center;
+  public PointComparator(Point center){
+    this.center=center;
+  }
+  public int compare(Point p1,Point p2){
+    return (int)(p2.getDist(center)-p1.getDist(center));
+  }
 }
 
 
