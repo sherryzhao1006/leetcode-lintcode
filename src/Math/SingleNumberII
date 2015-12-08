@@ -28,3 +28,26 @@ public class Solution {
         return res;
     }
 }
+public class Solution {
+    public int singleNumber(int[] nums) {
+        if(nums == null || nums.length == 0){
+            return 0;
+        }
+        int[] digit=new int[32];
+        int count=1;
+        for(int i=0;i<32;++i){
+            for(int j:nums){
+                if((j & count) != 0){
+                    digit[i]++;
+                }
+            }
+            digit[i]=digit[i]%3;
+            count=count<<1;
+        }
+        int result=0;
+        for(int i=0;i<32;++i){
+            result|=(digit[i]<<i);
+        }
+        return result;
+    }
+}
