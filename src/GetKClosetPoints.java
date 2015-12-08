@@ -1,3 +1,95 @@
+public interface PointsOnAPlane {
+    /**
+     * Stores a given point in an internal data structure
+     */
+    void addPoint(Point point);
+ 
+    /**
+     * For given 'center' point returns a subset of 'p' stored points
+     * that are closer to the center than others.
+     *
+     * E.g.
+     * Stored:
+     * (1, 1)
+     * (0, 3)
+     * (0, 4)
+     * (0, 5)
+     * (0, 6)
+     * (0, 7)
+     *
+     * findNearest(new Point(0, 0), 3) -> (1, 1), (0, 3), (0, 4)
+     */
+    
+    Collection<Point> findNearest(Point center, int p);
+ 
+    static class Point {
+        final int x;
+        final int y;
+        double d;
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+        public double getDist(Point center){
+          return Math.sqrt((x-center.x)*(x-center.x)+(y-center.y)*(y-center.y));
+        }
+    }
+}
+class PointComparator implements Comparator<Point> {
+    Point center = null;
+   
+    public PointComparator(Point center) {
+        this.center = center;
+    }
+   
+    @Override
+    public int compare(Point p1, Point p2) {
+        double dist1 = p1.getDist(center);
+        double dist2 = p2.getDist(center);
+        int diff = Double.compare(dist1,dist2);
+        return diff;
+    }
+}
+
+public class myPointsOnAPlane implements PointsOnAPlane{
+   
+    private List<Point> pts ;
+    public myPointsOnAPlane() {
+        pts = new ArrayList<Point>();
+    }
+    @Override
+    void addPoint(Point point) {
+        pts.add(point);
+    }
+   
+    @Override
+    Collection<Point> findNearest(Point center, int p) {
+
+        PriorityQueue<Point> q = new PriorityQueue<Point>(p, new PointComparator(center));
+        for(int i=0; i < pts.size(); i++) {
+            if(i < p) {
+                q.add(pts.get(i));
+            } else {
+                Point mycurrPoint = pts.get(i);
+                if(mycurrPoint.getDist(center) < q.peek().getDist(center)) {
+                    q.poll();
+                    q.add(mycurrPoint);
+                }
+            }
+        }
+        return q;
+    }
+}
+
+
+Add :
+time : O(1)
+
+
+findNearest:
+time : O(n*(logp))
+space : O(p)
+================================================================================================
 /*
  * 注意：此代码为到（0，0）的距离，且是二维，且comparator是判断p2是否大于p1
  * 如果是小于，则p1-p2
