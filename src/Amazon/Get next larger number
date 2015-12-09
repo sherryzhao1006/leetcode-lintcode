@@ -1,0 +1,23 @@
+/*题目就是给一个unsorted positive integer array , 没有duplicate, 输出是一个integer 和 这个integer 后面第一个大于该integer的那个
+举个例子吧：
+input(int[]): 4, 2, 6, 8 output(List<String>): 4---6. 2---6 6---8 8--- -1 (因为8后面没有大于8的element了，用-1表示)
+*/
+  public static int[] getNextLarger(int[] input){
+    if(input == null || input.length == 0){
+      return null;
+    }
+    int n=input.length;
+    int[] result=new int[n];
+    Stack<Integer> stack=new Stack<Integer>();
+    for(int i=0;i<n;++i){
+      System.out.println(input[i]);
+      while(!stack.isEmpty() && input[stack.peek()]<input[i]){
+        result[stack.pop()]=input[i];
+      }
+      stack.push(i);
+    }
+    while(!stack.isEmpty()){
+      result[stack.pop()]=-1;
+    }
+    return result;
+  }
