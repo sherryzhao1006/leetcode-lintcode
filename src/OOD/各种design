@@ -1,3 +1,16 @@
+Deck of cards: 重点 shuffle
+
+student 对应一个分数 可以有一个或者十几个 
+每一个pre有一个分数
+
+大学 有许多学院 学院学位分数不同
+判断能否会录取
+follow up：
+几号之前提交申请 大学学校学院有capacity 即使学生a满足学校A，
+follow up：
+特殊要求 三分之一的学生是贫困生 例如：年收入比较 或者一半的学生是女生
+follow up：
+录取的message
 贡献下oo design题：
 设计一个大学申请系统，每个学生有若干志愿，判断学生能否被一个学校录取。
 class Student{
@@ -31,6 +44,8 @@ class Degree(Major){
   private int id;
   private int minScore;
 }
+
+class 
 
 class System {  
   List<Student> students;
