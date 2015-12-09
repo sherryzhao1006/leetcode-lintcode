@@ -1,0 +1,119 @@
+/*给一个类似逆波兰式得树形结构，比如，root是＊，root.left是6，root.right是＋，＋得左右又是数字。，问怎么求，我刚想秒，他让我设计节点数据结构，当时就愣了，因为节点    可能是数字可能是符号，
+*/
+class Solution {
+  public static void main(String[] args) {
+    System.out.println("Hello, World!");
+    RPN rpn=new RPN("(123+3-4)*5/2-6");
+    List<String> lists=rpn.reverseRPN();
+    for(String str:lists){
+      System.out.print(str+",");
+    }
+    System.out.println();
+    RPNTree t=new RPNTree(lists);
+    t.buildTree();
+  }
+  //2+3-4*5/2-6
+}
+class TreeNode{
+  String val;
+  TreeNode left;
+  TreeNode right;
+  public TreeNode(String val){
+    this.val=val;
+  }
+}
+class RPNTree{
+  List<String> rRpn;
+  public RPNTree(List<String> rRpn){
+    this.rRpn=rRpn;
+  }
+  public TreeNode buildTree(){
+    TreeNode root;
+    root=helper(0,rRpn.size()-1);
+    showTree(root);
+    return root;
+  }
+  public TreeNode helper(int start,int end){
+    if(start>end) return null;
+    if(start == end){
+      return new TreeNode(rRpn.get(start));
+    }
+    TreeNode root=new TreeNode(rRpn.get(end));
+    root.left=helper(start,end-2);
+    root.right=helper(end-1,end-1);
+    return root;
+  }
+  public void showTree(TreeNode node){
+    if(node == null){
+      System.out.println("null");
+    }
+    if(node != null){
+      System.out.println(node.val);
+    }
+    if(node.left != null){
+      showTree(node.left);
+    }
+    if(node.right != null){
+      showTree(node.right);
+    }
+  }
+}
+class RPN{
+    String s;
+    public RPN(String s){
+      this.s=s;
+    }
+    public List<String> reverseRPN(){
+    List<String> result=new ArrayList<String>();
+    Stack<String> op=new Stack<String>();
+    if(s == null || s.length() == 0){
+      return result;
+    }
+    for(int i=0;i<s.length();++i){
+      char curChar=s.charAt(i);
+      if(curChar == ' '){
+        continue;
+      }else if(isOp(curChar)){
+        while(!op.isEmpty() && getPre(op.peek())>=getPre(curChar+"")){
+          result.add(op.pop());
+        }
+        op.push(curChar+"");
+        
+      }else if(curChar == '('){
+        op.push(curChar+"");
+        
+      }else if(curChar == ')'){
+        while(!op.isEmpty() && !op.peek().equals("(")){
+          result.add(op.pop());
+        }
+        op.pop();
+      }else{
+        int curnum=0;
+        while(i<s.length() && Character.isDigit(s.charAt(i))){
+          curnum=curnum*10+s.charAt(i)-'0';
+          i++;
+        }
+        i--;
+        result.add(curnum+"");
+      }
+    }
+    while(!op.isEmpty()){
+      result.add(op.pop());
+    }
+    return result;
+  }
+  public boolean isOp(char curChar){
+    if(curChar =='+' || curChar == '-' || curChar == '*' || curChar == '/'){
+      return true;
+    }
+    return false;
+  }
+  public int getPre(String op){
+    if(op.equals("+") || op.equals("-")){
+      return 1;
+    }else if(op.equals("*") || op.equals("/")){
+      return 2;
+    }
+    return 0;
+  }
+}
