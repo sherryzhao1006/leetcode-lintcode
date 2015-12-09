@@ -4,14 +4,11 @@ class Solution {
   public static void main(String[] args) {
     System.out.println("Hello, World!");
     RPN rpn=new RPN("(123+3-4)*5/2-6");
-    List<String> lists=rpn.reverseRPN();
-    for(String str:lists){
-      System.out.print(str+",");
-    }
-    System.out.println();
-    RPNTree t=new RPNTree(lists);
-    t.buildTree();
-  }
+    System.out.println(rpn.calculate());
+  //   System.out.println();
+  //   RPNTree t=new RPNTree(lists);
+  //   t.buildTree();
+   }
   //2+3-4*5/2-6
 }
 class TreeNode{
@@ -63,6 +60,27 @@ class RPN{
     public RPN(String s){
       this.s=s;
     }
+  public int calculate(){
+    List<String> str=reverseRPN();
+    Stack<Integer> stack=new Stack<Integer>();
+    for(String s:str){
+      if(isOp(s.charAt(0))){
+        if(s.equals("+")){
+          stack.push(stack.pop()+stack.pop());
+        }else if(s.equals("-")){
+          stack.push(-stack.pop()+stack.pop());
+        }else if(s.equals("*")){
+          stack.push(stack.pop() * stack.pop());
+        }else{
+          int val=stack.pop();
+          stack.push(stack.pop()/val);
+        }
+      }else{
+        stack.push(Integer.parseInt(s));
+      }
+    }
+    return stack.pop();
+  }
     public List<String> reverseRPN(){
     List<String> result=new ArrayList<String>();
     Stack<String> op=new Stack<String>();
@@ -116,4 +134,5 @@ class RPN{
     }
     return 0;
   }
+}
 }
