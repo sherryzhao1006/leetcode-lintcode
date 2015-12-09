@@ -1,0 +1,27 @@
+// http://articles.leetcode.com/2010/11/largest-binary-search-tree-bst-in.html
+  private TreeNode cur=null;//record the root of the largest bst
+  private int maxCount=0;
+  public static int findLargestBST(TreeNode root,int min,int max){
+    if(root == null){
+      return 0;
+    }
+    boolean isBST=true;
+    int left=findLargestBST(root.left,min,max);
+    int curmin=(left == 0)?root.val:min;
+    if(left == -1 || (left != 0 && root.val<=max)){//这里的max是左边的最大值
+      return -1;
+    }
+    int right=findLargestBST(root.right,min,max);
+    int curmax=(right == 0)?root.val:max;
+    if(right == -1 || (right != 0 && root.val<=min)){//这里的min是右边的最小值
+      return -1;
+    }
+    min=curMin;
+    max=curMax;
+    int total=left+right+1;
+    if(total>maxCount){
+      cur=root;
+      total=maxCount;
+    }
+    return total;
+  }
