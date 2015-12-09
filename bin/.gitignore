@@ -1,5 +1,60 @@
-/MinimumWindowSubString.class
-/Solution.class
-/array/
-/binarytree/
+/ASCII.class
+/BTZigzagLevelOrderTraversal.class
+/Codec.class
+/DataStreamMedian.class
+/Design/
+/EvenLists.class
+/GetKClosetPoints.class
+/HashTable/
+/KthSmallestElementinaBST.class
+/LongestPalindromicSubstring.class
+/LowestCommonAncestor.class
 /Math/
+/MinimumWindowSubString.class
+/MissingNumber.class
+/NumberOfislands.class
+/Point.class
+/PointComparator.class
+/RemoveDuplicatesfromSortedArray.class
+/RemoveDuplicatesfromSortedArrayII.class
+/ReverseLinkedList.class
+/RotateImage.class
+/SerializeandDeserializeBinaryTree.class
+/ActiveUser
+/Calculator
+/Candy
+/Clone Graph
+/Course Schedule
+/DeleteFiNode
+/FindMaxSwapOneToZero
+/Gas Station
+/GroupAnagrams.class
+/HashCodeEqual
+/ImplementHashTable
+/IntersectionofTwoLinkedLists.class
+/MeetingRoom
+/MeetingRoomsII
+/MinimumBusStation
+/OOD/
+/PaintFill
+/ParkingDesign
+/Reverse Bits
+/SortStack
+/Stack/
+/String/
+/SwapNeighborBit
+/TTLCache
+/UnionFind/
+/ValidateBST.class
+/Word Break
+/array/
+/atoi.class
+/backtracking/
+/binarysearch/
+/binarytree/
+/dynamicprogramming/
+/isSubstring
+/linklist/
+/passwordSuggestions
+/shuffle
+/example.class

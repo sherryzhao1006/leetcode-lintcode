@@ -1,0 +1,113 @@
+https://github.com/cc2011/practice/blob/master/leetcode/Basic%20Calculator%20I
+public class Solution {
+
+  public  int calculate(String s) {
+        if(s == null || s.length() == 0){
+            return 0;
+        }
+        List<String> res = revertToRPN(s);
+        return evaluateRPN(res);
+  }
+  
+  public  int evaluateRPN(List<String> res) {
+      if(res == null || res.size() == 0) {
+        return 0;
+      }
+      Stack<Integer> numS = new Stack<Integer>();
+      for(int i=0; i < res.size(); i++) {
+        if(isOperator(res.get(i))) {
+          int num2 = numS.pop();
+          int num1 = numS.pop();
+          int sum = 0;
+          switch(res.get(i)) {
+            case "+" :
+                sum = num1+num2;
+              break;
+            case "-" :
+                sum = num1-num2;
+              break;
+            case "*" :
+                sum = num1*num2;
+              break;
+            case "/" : 
+                sum = num1/num2;
+              break;
+          }
+          numS.push(sum);
+        } else {
+          numS.push(Integer.parseInt(res.get(i)));
+        }
+      }
+      return numS.pop();
+    
+  }
+  
+  //2+3*55-63
+  //2+3-4*5/2-6   2 3 + 4 5 * 2 / - 6 - 
+  
+  //num st : 2 3 + 4 5 * 2 / - 6 
+  //op st :  -
+    public  List<String> revertToRPN(String s) {
+        List<String> result=new ArrayList<String>();
+      Stack<String> num=new Stack<String>();
+      Stack<String> op = new Stack<String>();
+        
+        for(int i=0; i < s.length();i++) {
+            if(s.charAt(i) == ' ') {
+                continue;
+            }
+            else if(isOperator(s.charAt(i)+"")) {
+              //-
+              //+
+              while(!op.isEmpty() && (getPrecedence(op.peek()) >= getPrecedence(s.charAt(i)+""))) {
+                num.push(op.pop());
+              }                
+              op.push(s.charAt(i)+"");
+            }else if(s.charAt(i) == '('){
+              op.push(s.charAt(i)+"");
+            }else if(s.charAt(i) == ')'){
+              while(!op.isEmpty() && !op.peek().equals("(")) {
+                num.push(op.pop());
+              }
+              op.pop();
+            } 
+            else{  
+              int j=i+1;
+              StringBuilder sb = new StringBuilder();
+              sb.append(s.charAt(i));
+              while(j < s.length() && Character.isDigit(s.charAt(j))) {
+                  sb.append(s.charAt(j));
+                j++;
+              }
+              String currNum = sb.toString();
+              i=j-1;
+              num.push(currNum);
+            }
+        }
+      
+        while(!op.isEmpty()) {
+          num.push(op.pop());
+        }
+        while(!num.isEmpty()) {
+            op.push(num.pop());
+        }
+        while(!op.isEmpty()){
+          result.add(op.pop());//insert to arraylist at the beginning takes time
+        }
+      return result;
+    }
+    public  boolean isOperator(String a){
+      if(a.equals("+") || a.equals("-") || a.equals("*") || a.equals("/")){
+        return true;
+      } 
+      return false;
+    }
+    public  int getPrecedence(String op) {
+      if(op.equals("+") || op.equals("-"))
+        return 1;
+      else if( op.equals("*") || op.equals("/")){
+        return 2;
+      }
+      return 0;
+    } 
+}

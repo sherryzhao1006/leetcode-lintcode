@@ -1,0 +1,40 @@
+/*/**
+ * Implement the "paint fill" function that one might see on many image editing
+ * programs. That is, given a screen (represented by a two-dimensional array of
+ * colors), a point, and a new color, fill in the surrounding area until the
+ * color changes from the original color.
+ * 
+ */
+*/
+class Solution {
+  public static void main(String[] args) {
+    char[][] screen={{'b','b'},{'r','b'}};
+    fill(screen,0,0,'y');
+    for(int i=0;i<screen.length;++i){
+      for(int j=0;j<screen[0].length;++j){
+        System.out.print(screen[i][j]+" ");
+      }
+      System.out.println();
+    }
+
+  }
+    public static void fill(char[][] screen, int x, int y, char color) {
+      if(screen == null || screen.length == 0){
+        return;
+      }
+      char ori=screen[x][y];
+      boolean[][] visit=new boolean[screen.length][screen[0].length];
+      helper(screen,x,y,ori,color,visit);
+    }
+  public static void helper(char[][] screen,int x,int y,char ori,char color,boolean[][] visit){
+    if(x<0 || x>=screen.length || y<0 || y>=screen[0].length || screen[x][y] != ori || visit[x][y]){
+      return;
+    }
+    screen[x][y]=color;
+    visit[x][y]=true;
+    helper(screen,x-1,y,ori,color,visit);
+    helper(screen,x+1,y,ori,color,visit);
+    helper(screen,x,y-1,ori,color,visit);
+    helper(screen,x,y+1,ori,color,visit);
+  }
+}
