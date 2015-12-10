@@ -1,0 +1,76 @@
+/*37.
+说一个很长很长的list里面有很多amazon的产品，每一种产品都出现了很多次，所以有的产品比较popular，让你找出前100个最popular的产品，并且输出。 
+我一开始写hashmap构建了一半，她叫我不要写了， 然后讨论思路，我后面说用priorityqueue，搞个comparator，往里加然后size100个就行，不知道是什么问题，她一直觉得我这样做有问题， 
+各种challenge，然后最后没时间了，我说了个用maxheap来做，导致没写完剩下的code，只说了思路，然后最后问她问题的时候问了下这题她怎么做，她说用minheap，我无语，priorityqueue不就是minheap。哎，被各种影响心情。.	 
+
+*/
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+class Pair{
+  private int key;
+  private int val;
+  public Pair(int key,int val){
+    this.key=key;
+    this.val=val;
+  }
+  public int getValue(){
+    return this.val;
+  }
+  public int getKey(){
+    return this.key;
+  }
+}
+
+
+
+class Solution {
+  public static void main(String[] args) {
+    int[] arr = {3,3,3,1,2,3,2,4,2,5,7};
+    List<Integer> JJ = kMostRepeating(arr,2);
+    for(int i:JJ){
+      System.out.println(i);
+    }
+  }
+  public static List<Integer> kMostRepeating(int[] arr,int k){
+    if(arr == null || arr.length == 0){
+      return null;
+    }
+    List<Integer> result=new ArrayList<Integer>();
+    PriorityQueue<Pair> pq=new PriorityQueue<Pair>(k,new PairComparator());
+    Map<Integer,Integer> map=new HashMap<Integer,Integer>();
+    for(int i=0;i<arr.length;++i){
+      if(map.containsKey(arr[i])){
+        map.put(arr[i],map.get(arr[i])+1);
+      }else{
+        map.put(arr[i],1);
+      }
+    }
+    for(int i:map.keySet()){
+      Pair p=new Pair(i,map.get(i));
+      if(pq.size()<k){
+        pq.add(p);
+      }else{
+        if(pq.peek().getValue()<p.getValue()){
+          pq.poll();
+          pq.add(p);
+        }
+      }
+    }
+    while(!pq.isEmpty()){
+      result.add(0,pq.poll().getKey());
+    }
+    return result;
+  }
+}
+class PairComparator implements Comparator<Pair>{
+  public int compare(Pair p1,Pair p2){
+    return p1.getValue()-p2.getValue();
+  }
+}
